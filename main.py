@@ -15,19 +15,28 @@ def main() -> None:
 	owner.add_pet(pet1)
 	owner.add_pet(pet2)
 
-	task1 = Task(name="Morning Walk", category="exercise", duration=25, priority=1, pet=pet1)
-	task2 = Task(name="Medication", category="health", duration=10, priority=1, pet=pet1)
+	
 	task3 = Task(name="Play Session", category="enrichment", duration=20, priority=2, pet=pet2)
+	task3 = Task(name="Morning Walk", category="exercise", duration=25, priority=1, pet=pet1)
+	task2 = Task(name="Medication", category="health", duration=10, priority=1, pet=pet1)
+	
 
-	owner.add_task(task1)
+	owner.add_task(task3)
 	owner.add_task(task2)
 	owner.add_task(task3)
 
 	owner.scheduler = Scheduler(owner)
 	schedule = owner.get_schedule()
+	warnings = owner.scheduler.get_warnings() if owner.scheduler else []
 
 	print("Today's Schedule")
 	print("-" * 40)
+	if warnings:
+		print("Warnings:")
+		for warning in warnings:
+			print(f"- {warning}")
+		print("-" * 40)
+
 	if not schedule:
 		print("No tasks could be scheduled today.")
 		return

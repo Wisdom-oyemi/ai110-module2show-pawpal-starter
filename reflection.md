@@ -34,7 +34,10 @@ One change that was made was a better link between Pet and Task via implementing
 **b. Tradeoffs**
 
 - Describe one tradeoff your scheduler makes.
+My updated scheduler trades an embedded check condition for the HH:MM format with the use of a constantly updating variable that allows for the format to be parsed once per task.
+
 - Why is that tradeoff reasonable for this scenario?
+This tradeoff is reasonable for this scenario because it simplifies the schedule optimization module by introducing reoccurring logic that doesn't get bogged down by nested loops.
 
 ---
 
@@ -48,7 +51,10 @@ One change that was made was a better link between Pet and Task via implementing
 **b. Judgment and verification**
 
 - Describe one moment where you did not accept an AI suggestion as-is.
+I was reconfiguring the optimize_schedule method to add extra task filtering and it wanted to update the test_pawpal.py file instead of the main.py file for input checking.
+
 - How did you evaluate or verify what the AI suggested?
+I double-checked which files it wanted to update, read through the code it wanted to implement, and redirected the change.
 
 ---
 
