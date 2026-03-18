@@ -1,5 +1,5 @@
 import streamlit as st
-from pawpal_system import Owner, Pet, Task
+from pawpal_system import Owner, Pet, Scheduler, Task
 
 st.set_page_config(page_title="PawPal+", page_icon="🐾", layout="centered")
 
@@ -7,12 +7,7 @@ st.title("🐾 PawPal+")
 
 st.markdown(
     """
-Welcome to the PawPal+ starter app.
-
-This file is intentionally thin. It gives you a working Streamlit app so you can start quickly,
-but **it does not implement the project logic**. Your job is to design the system and build it.
-
-Use this app as your interactive demo once your backend classes/functions exist.
+Welcome to the PawPal+ app!
 """
 )
 
@@ -22,18 +17,6 @@ with st.expander("Scenario", expanded=True):
 **PawPal+** is a pet care planning assistant. It helps a pet owner plan care tasks
 for their pet(s) based on constraints like time, priority, and preferences.
 
-You will design and implement the scheduling logic and connect it to this Streamlit UI.
-"""
-    )
-
-with st.expander("What you need to build", expanded=True):
-    st.markdown(
-        """
-At minimum, your system should:
-- Represent pet care tasks (what needs to happen, how long it takes, priority)
-- Represent the pet and the owner (basic info and preferences)
-- Build a plan/schedule for a day that chooses and orders tasks based on constraints
-- Explain the plan (why each task was chosen and when it happens)
 """
     )
 
@@ -169,14 +152,68 @@ else:
 st.divider()
 
 st.subheader("Build Schedule")
-st.caption("Generate a daily plan from your current pets and tasks.")
+st.caption("Generate a sorted and filtered daily plan using scheduler rules.")
+
+if owner.scheduler is None:
+    owner.scheduler = Scheduler(owner)
+
+available_categories = sorted({task.category for task in owner.tasks})
+available_pet_names = sorted({task.pet.name for task in owner.tasks if task.pet is not None})
+
+fcol1, fcol2 = st.columns(2)
+with fcol1:
+    selected_categories = st.multiselect(
+        "Filter categories",
+        options=available_categories,
+        default=available_categories,
+    )
+with fcol2:
+    selected_pets = st.multiselect(
+        "Filter pets",
+        options=available_pet_names,
+        default=available_pet_names,
+    )
+
+fcol3, fcol4 = st.columns(2)
+with fcol3:
+    max_priority = st.selectbox(
+        "Highest priority number to include (1 is most urgent)",
+        options=[1, 2, 3, 4, 5],
+        index=4,
+    )
+with fcol4:
+    schedule_time_limit = st.number_input(
+        "Schedule time limit (minutes)",
+        min_value=1,
+        max_value=600,
+        value=int(owner.available_time_per_day),
+    )
 
 if st.button("Generate schedule"):
-    schedule = owner.get_schedule()
+    constraints = {
+        "max_time": float(schedule_time_limit),
+        "max_priority": int(max_priority),
+        "include_categories": selected_categories,
+        "include_pets": selected_pets,
+    }
+
+    schedule = owner.scheduler.optimize_schedule(constraints)
+    warnings = owner.scheduler.get_warnings()
+
     if schedule:
-        st.success("Schedule generated.")
+        st.success("Schedule generated and sorted by scheduler priority/time rules.")
         st.table(schedule)
-        st.markdown("### Why this plan?")
-        st.text(owner.scheduler.explain_reasoning())
+        total_minutes = sum(item["duration"] for item in schedule)
+        st.caption(
+            f"Scheduled {len(schedule)} task(s), totaling {total_minutes:.0f} minute(s)."
+        )
     else:
-        st.info("No tasks could be scheduled with the current setup.")
+        st.info("No tasks matched the selected filters or available time limit.")
+
+    if warnings:
+        st.markdown("### Conflict and validation warnings")
+        for warning in warnings:
+            st.warning(warning)
+
+    st.markdown("### Why this plan?")
+    st.text(owner.scheduler.explain_reasoning())

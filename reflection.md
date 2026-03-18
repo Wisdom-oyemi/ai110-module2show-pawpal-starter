@@ -69,12 +69,15 @@ I double-checked which files it wanted to update, read through the code it wante
 **a. What you tested**
 
 - What behaviors did you test?
+I tested mostly task inversion and conflict behaviors, to see if the system would raise warnings as a result of incompatible time slots.
+
 - Why were these tests important?
+These tests are important because the scheduler's optimization logic is the lifeblood of the entire program, and it should be able to raise errors in case there are invalid inputs.
 
 **b. Confidence**
 
 - How confident are you that your scheduler works correctly?
-I am 80% confident my scheduler works correctly.
+I am 90% confident my scheduler works correctly.
 
 - What edge cases would you test next if you had more time?
 Extended time length conflicts (up to a month or several months)
@@ -88,10 +91,16 @@ Misspellings in terms of pet names or preferences
 
 - What part of this project are you most satisfied with?
 
+I'm most satisfied with the improvements made to both the backend logic and the specifically designed test suite.
+
 **b. What you would improve**
 
 - If you had another iteration, what would you improve or redesign?
 
+I would probably spend more time redesigning the UI so that it looks less default and more intuitive/on-brand for a pet care system.
+
 **c. Key takeaway**
 
 - What is one important thing you learned about designing systems or working with AI on this project?
+
+I learned that AI can be very efficient with the right guardrails in place, but it may need some encouraging to stay within those guardrails.
