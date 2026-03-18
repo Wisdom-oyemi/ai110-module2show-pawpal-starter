@@ -29,7 +29,10 @@ One change that was made was a better link between Pet and Task via implementing
 **a. Constraints and priorities**
 
 - What constraints does your scheduler consider (for example: time, priority, preferences)?
+The Scheduler class considers time and priority as its main constraints.
+
 - How did you decide which constraints mattered most?
+These constraints mattered the most because they came directly assigned from the Owner class and therefore had the most influence over the programs development.
 
 **b. Tradeoffs**
 
@@ -46,7 +49,10 @@ This tradeoff is reasonable for this scenario because it simplifies the schedule
 **a. How you used AI**
 
 - How did you use AI tools during this project (for example: design brainstorming, debugging, refactoring)?
+I used Github Copilot mainly for the design brainstorming and refactoring.
+
 - What kinds of prompts or questions were most helpful?
+The prompts that were the most helpful were prompts that guided it to image/create situations based on specific guardrails.
 
 **b. Judgment and verification**
 
@@ -68,7 +74,11 @@ I double-checked which files it wanted to update, read through the code it wante
 **b. Confidence**
 
 - How confident are you that your scheduler works correctly?
+I am 80% confident my scheduler works correctly.
+
 - What edge cases would you test next if you had more time?
+Extended time length conflicts (up to a month or several months)
+Misspellings in terms of pet names or preferences
 
 ---
 

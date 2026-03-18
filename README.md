@@ -49,3 +49,19 @@ Smarter scheduling features have been added:
 - Updated task interactivity in regards to reoccurring (daily/weekly) tasks
 - Task conflict detection (will print warning)
 
+## Testing PawPal+
+
+### Setup
+
+```bash
+python -m pytest
+```
+
+The tests in the PawPal+ test suite cover the following behaviors:
+- Task count increase
+- Marking a task complete
+- Chronological order of display
+- Task daily reoccurrence
+- Time conflicts for tasks
+
+Confidence level: 4 stars
